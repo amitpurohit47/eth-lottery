@@ -6,7 +6,7 @@ contract Lottery {
     address public manager;
     address[] public players;
 
-    constructor() {
+    constructor() public {
         manager = msg.sender;
     }
 
@@ -17,8 +17,9 @@ contract Lottery {
 
     function pickWinner() public restricted {
         uint256 index = random() % players.length;
-        payable(players[index]).transfer(address(this).balance);
+        players[index].transfer(address(this).balance);
         // mark the player payable and convert contract to address
+        // only for higher solidity versions
         players = new address[](0); // reset the contract
     }
 
